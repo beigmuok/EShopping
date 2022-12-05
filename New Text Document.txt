@@ -1,0 +1,22 @@
+https://www.youtube.com/watch?v=EPHRLq7bCI4 JQuery Grid With Searching Paging and Sorting in ASP.NET CORE
+
+
+<script type="text/javascript">
+        $(function () {
+            $("#btnGet").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/AjaxMethod",
+                    data: { "name": $("#txtName").val() },
+                    success: function (response) {
+                        alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                   }
+                });
+            });
+        });

@@ -1,0 +1,80 @@
+﻿@model ProductTag
+
+@{
+	ViewData["Title"] = "New Product Tag";
+}
+<form asp-action="Create" method="post" id="create-form">
+	<div class="col-8 offset-md-2">
+		<div class="rounded d-flex">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>			
+			<div class="form-control rounded">
+				<h4> New Product Tag </h4>
+				<div class="col-3 mt-3">
+					 @Html.DisplayNameFor(n => n.Name)
+				</div>
+				<div class="d-inline">
+					<input asp-for="Name" class="form-control mt-2" placeholder="Tag ..."></input>
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="form-group mt-3">
+					<a asp-action="Index" class="btn btn-success float-end"> Back To List</a>
+					<input type="button" class="btn btn-primary " value="Save" id="btn-submit"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+
+
+@section scripts{
+	@{
+		await Html.RenderPartialAsync("_validationScriptsPartial");
+	}
+		<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+		<script type="text/javascript">
+
+			//jQuery(document).ready(
+				
+			//jQuery("#btn-submit").click(function (event)
+			//	event.preventDefault();				
+			//		alertify.confirm("New Entry", "Confirm Creating new Product Tag" , function(e) 
+			//		{
+			//			if(e)
+			//	            {						    
+			//	            $("#create-form").submit();
+			//				{
+			//		             alertify.success("Product Tag Created Successfully")
+			//					 return true;
+			//				}
+			//				else
+			//				{
+			//					alertify.error("Product Tag failed to be created")
+			//					return false;
+			//				}
+			//		}, function (e){
+			//			alertify.error("User Cancelled Request ")
+			//		});
+			//	}
+			//)
+
+		$(document).ready(function (e) {
+		@*//your button click code*@
+				$("#btn-submit").on("click", function (e) {
+					e.preventDefault();
+					alertify.confirm('Confirmation Dialog', 'Confirm Creating a new Product Tag', function (e) {
+						if (e) {
+							$("#create-form").submit();
+							//alertify.success("Product Tag  was created successfully.")
+							return true;
+						} else {
+							alertify.error("Something went wrong");
+							return false;
+						}
+					}
+					,function (e) { alertify.error('User Cancelled Request') });
+
+				});
+		});
+		</script>
+	}

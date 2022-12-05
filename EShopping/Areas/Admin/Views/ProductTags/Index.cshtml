@@ -1,0 +1,110 @@
+﻿
+@model IEnumerable<ProductTag>
+
+
+	@{
+		ViewData["Title"] = "List of Product tag";
+	}
+
+
+	<div class="d-flex">
+		<div class="col-8 offset-md-2 rounded">
+			<div class="row d-flex">
+				<div class="col text-info">
+					<h4> List of Product Tags </h4>
+				</div>
+				<div class="col nav-item">
+					<a class="btn btn-primary float-end" asp-action="Create" asp-area="Admin"> <i class="bi bi-plus-circle"></i> New Tag </a>
+				</div>
+			</div>
+
+			<div class="table-responsive-md table-info">
+				<table class="table table-striped">
+							 <div class="row">
+								<div class="bg-info">
+									<thead>
+										<th>
+											<tr class="align-middle">
+												@Html.DisplayNameFor(N => N.Name)
+											</tr>
+										</th>
+									</thead>
+								</div>
+							</div>
+							
+							<div class="row table-striped">
+								<tbody class="align-middle">
+									@foreach(var item in Model)
+									{
+										<tr>
+											<td>
+												@item.Name
+											</td>
+											<td>
+												<partial name="ButtonPartial" class="float-end" model="@item.Id">
+											</td>
+										</tr>
+									}
+								</tbody>
+							</div>
+				 </table>
+
+			</div>
+
+		</div>
+	</div>
+
+
+@section scripts
+{
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+	<script type="text/javascript">
+
+
+		jQuery(document).ready( function ()
+		{
+			var save = `@TempData["Save"]`
+					//console.log(save)
+					if(save!= '')
+					{
+						var save = JSON.parse(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values)));
+						console.log(save)
+				if (save.responseCode == '0') {
+					console.log("hRES " + save.responseMessage)
+							alertify.success(save.responseMessage);
+						}
+						else
+						{
+					console.log("hRES SSS" + save.responseMessage)
+					alertify.error(save.responseMessage);
+						}
+					}
+			var save = `@TempData["Edit"]`
+		 
+					if (save != '') {
+						var save = JSON.parse(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values)));
+						if (save.responseCode == '0') {
+							alertify.success(save.responseMessage);
+						}
+						else {
+							alertify.error(save.responseMessage);
+						}
+					}
+			var save = `@TempData["Delete"]`
+			 
+					if (save != '') {
+						var save = JSON.parse(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values)));
+						if (save.responseCode == '0') {
+							alertify.success(save.responseMessage);
+						}
+						else {
+							alertify.error(save.responseMessage);
+						}
+					}
+		 
+		
+		});
+
+	</script>
+}

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ProductType>
+
+
+	@{
+		ViewData["Title"] = "List of Product Types";
+	}
+
+	<br />
+	<br/>
+<div class="col-md-8 offset-md-2">
+	 
+	<div class="row input-group">
+		 <div class="col align-middle">
+	     <h2 class="text-info class align-middle">Product Type List </h2>	 
+		</div>
+		 <div class="col">			 
+			<a asp-action="Create" class="btn btn-success float-end"> <i class="bi bi-plus-circle"> </i>  New Product Type </a>
+		</div>
+		</div>
+
+
+	<br />
+
+	<div class="row input-group">
+		<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>
+				@Html.DisplayNameFor(c=> c.TypeName)
+				</th>
+				<th>
+
+				</th>
+				<th>
+
+				</th>
+			</tr>
+			 
+
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr class="align-self-center">
+						<td class = "align-middle"> @item.TypeName </td>
+						 <td class = "align-middle"> <partial name="buttonPartial" class="float-end" model =@item.Id></partial> </td>
+						 
+					</tr>
+			}
+		</tbody>
+	</table>
+	</div>
+
+		@section scripts
+		{
+			<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+			<script type="text/javascript">
+					$(document).ready(function () {
+
+					var save = `@TempData["Save"]`
+					//console.log(save)
+					if(save!= '')
+					{
+					var res =  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+					console.log(res)
+					const saveJson = JSON.parse(res);
+							console.log(save['responseCode'])
+						    if(saveJson['responseCode']=='0')
+							{
+								alertify.success(saveJson.responseMessage);
+							}
+							else
+							{
+								alertify.error(saveJson.responseMessage);
+							}
+						  
+					}
+					var edit = `@TempData["Edit"]`
+				    if(edit!= '')
+					{
+						alertify.success(edit);
+				    }
+				   var del = `@TempData["Delete"]`
+				   if(del!= '')
+				   { 
+				    var res =  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));	
+					console.log(res)
+					const saveJson = JSON.parse(res);
+							//console.log(save['responseCode'])
+								if(saveJson['responseCode']=='0')
+							{
+								alertify.success(saveJson.responseMessage);
+							}
+							else
+							{
+								alertify.error(saveJson.responseMessage);
+							}					  
+					}
+				    
+				});
+						
+		</script>
+		}
