@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Product>
+
+@{
+	ViewData["Title"] = "Product List";
+}
+
+
+<div class="col-md-10 offset-md-1">
+	<div class="row d-flex">
+		<div class="col text-info">
+			<h2>Products List </h2>
+		</div>
+		<div class="col nav-item">
+			<a asp-action="Create" class="btn btn-outline-primary float-end"> <i class="bi bi-plus-circle">   </i>Add New Product </a>
+		</div>
+	</div>
+
+	<form method="post" class="d-flex">
+		<div class="row input-group d-flex">
+			<div class="col">
+				<input type="number" class="form-control" name="lowerAmount" /> 
+				
+			</div>
+			<div class="col">
+				 
+				<input type="number" class="form-control" name="largerAmount" /> 
+			</div>
+			<div class="col">
+				
+				<input type="submit" class="btn btn-success" value="search" /> 
+			</div>
+		   @* div class="col-lg-3">	</div>*@
+		</div>
+	</form>
+
+	<br />
+	<div class="table-responsive">
+		<table class="table table-striped border" id="myTable">
+			<thead>
+				<tr class="table-info">
+					<th> @Html.DisplayNameFor(c => c.Name) </th>
+					<th> @Html.DisplayNameFor(c => c.Price) </th>
+					<th> @Html.DisplayNameFor(c => c.ProductColor) </th>
+					<th> @Html.DisplayNameFor(c => c.IsAvailable) </th>
+					<th> @Html.DisplayNameFor(c => c.ProductTypeId) </th>
+					<th> @Html.DisplayNameFor(c => c.ProductTagId) </th>
+					
+					@*<th> Actions </th>*@
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var item in Model)
+				{
+					<tr>
+						<td> @item.Name </td>
+						<td> @item.Price.ToString("0.00") </td>
+						<td> @item.ProductColor </td>
+						<td> @item.IsAvailable </td>
+						<td> @item.ProductType.TypeName </td>
+						<td> @item.ProductTag.Name </td>
+						<td> <partial name="ButtonPartial" model="@item.Id"/> </td>
+						@*<td>
+                                    <partial name="ButtonPartial" model="@item.Id" />
+                         </td>*@
+				     </tr>
+				}
+			</tbody>
+
+		</table>
+	</div>
+
+</div>
+
+@section scripts
+	{
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+	@*database scripts used*@
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+	@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.css" />
+
+	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.13.1/datatables.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.13.1/datatables.min.css" />
+
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jq-3.6.0/dt-1.13.1/datatables.min.js"></script>*@
+
+
+	<script type="text/javascript">
+		@*add function to handle datatable search pagination and limited sort*@
+		$(document).ready(function () {
+			$('#myTable').DataTable();
+		});
+			@*functions to alert user on database entry, update and  delete operations success and failure*@
+		$(document).ready(function () {
+
+			var save = `@TempData["Save"]`
+			//console.log(save)
+			if (save != '') {
+				var res = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+			
+				const saveJson = JSON.parse(res);
+				 
+				if (saveJson['responseCode'] == '0') {
+					alertify.success(saveJson.responseMessage);
+				}
+				else {
+					alertify.error(saveJson.responseMessage);
+				}
+
+			}
+			var edit = `@TempData["Edit"]`
+			if (edit != '') {
+				var res = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+				 
+				const saveJson = JSON.parse(res);
+				 
+				if (saveJson['responseCode'] == '0') {
+					alertify.success(saveJson.responseMessage);
+				}
+				else {
+					alertify.error(saveJson.responseMessage);
+				}
+			}
+			var del = `@TempData["Delete"]`
+			if (del != '') {
+				var res = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+			 
+				const saveJson = JSON.parse(res);
+				 
+				if (saveJson['responseCode'] == '0') {
+					alertify.success(saveJson.responseMessage);
+				}
+				else {
+					alertify.error(saveJson.responseMessage);
+				}
+			}
+
+		});
+
+			
+
+
+	</script>
+}

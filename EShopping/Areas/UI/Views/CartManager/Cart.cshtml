@@ -1,0 +1,380 @@
+﻿
+
+@{
+    ViewData["Title"] = "Cart";
+}
+<section class="h-100 gradient-custom">
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center my-4">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Cart</h5>
+                    </div>
+                    @*@foreach (var item in Model)
+                    {*@
+                        <div id="bodyid" class="card-body">
+                            <!-- Single item -->
+                           @* <div class="row">
+                                <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">
+                                    <!-- Image -->
+                                    <div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple-color="light">
+                                        <img id="cartImageId" src="/#"
+                                         class="w-100" alt="Blue Jeans Jacket" style="max-height:90px;max-width:90px;" />
+                                        <a href="#!">
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"></div>
+                                        </a>
+                                    </div>
+                                    <!-- Image -->
+                                </div>
+
+                                <div class="col-lg-5 col-md-6 mb-4 mb-lg-0">
+                                    <!-- Data -->
+                                    <p id="cartNameId"><strong>Name</strong></p>
+                                    
+                              <a id="cartRemoveQuantityId" type="button" asp-action="Remove" asp-controller="Product" asp-area="UI" asp-route-id="Id" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip"
+                                   title="Remove item">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                  <!-- <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                                title="Move to the wish list">
+                                <i class="fas fa-heart"></i>
+                                </button>-->
+                                    <!-- Data -->
+                                </div>
+
+                                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                                    <!-- Quantity -->
+                                    <div class="d-flex mb-4" style="max-width: 300px">
+                                        <button id="cartAddQuantityId" class="btn btn-primary px-3 me-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+
+                                        <div class="form-outline">
+                                            <input id="cartQuantityvalue" min="0" name="quantity" value="1" type="number" class="form-control" />
+                                            <label class="form-label" for="form1">Quantity</label>
+                                        </div>
+
+                                        <button id="cartMinusQuantityId" class="btn btn-primary px-3 ms-2"
+                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- Quantity -->
+                                    <!-- Price -->
+                                    <p class="text-start text-md-center">
+                                        <strong id="cartPriceId">Price.ToString("0.00")</strong>
+                                    </p>
+                                    <!-- Price -->
+                                </div>
+                            </div>
+                            <!-- Single item -->*@
+
+
+                        </div>
+                   <!-- }-->
+
+                </div>
+                @* <div class="card mb-4">
+                <div class="card-body">
+                <p><strong>Expected shipping delivery</strong></p>
+                <p class="mb-0">12.10.2020 - 14.10.2020</p>
+                </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                <div class="card-body">
+                <p><strong>We accept</strong></p>
+                <img class="me-2" width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                alt="Visa" />
+                <img class="me-2" width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                alt="American Express" />
+                <img class="me-2" width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                alt="Mastercard" />
+                <img class="me-2" width="45px"
+                src="https://mdbcdn.b-cdn.net/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.webp"
+                alt="PayPal acceptance mark" />
+                </div>
+                </div>*@
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header py-3">
+                        <h5 class="mb-0">Summary</h5>
+                    </div>
+                    <div class="card-body" id="totalSummary">
+                        @*<ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                Products
+                                <span id="cartTotalSum">sum</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Shipping
+                                <span>Gratis</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                                <div>
+                                    <strong>Total amount</strong>
+                                    <strong>
+                                        <p class="mb-0">(including VAT)</p>
+                                    </strong>
+                                </div>
+                                <span><strong id="cartTotalFinal">sum</strong></span>
+                            </li>
+                        </ul>
+                        <div class="form-group mt-3">
+                            <a type="button" asp-action="Index" class="btn btn-dark text-warning float-start"> <i class="bi bi-back"> </i> Back </a>
+                            <a type="button" asp-action="checkout" asp-area="UI" asp-controller="Product" class="btn btn-success text-center float-end"> <i class="bi bi-forward"> </i>  check out </a>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+ @section scripts
+ {
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+     <script type="text/javascript">
+         $(document).ready(function () {
+            getCartCount();
+         });
+     </script>
+
+    
+
+     <script type="text/javascript">
+
+          var inputAmount = 0 ;
+
+
+         function getCartCount(){
+
+            var amount = 0;
+            var url = "/UI/CartManager/getCartFullDetails";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    success: function (response) 
+                    {
+                        var SetData = $("#bodyid");
+                        if (response['success'] == true)
+                        {
+                                //alertify.success(response['message'][0]);
+                            //     console.log(response['result'])  
+                            //console.log(" Id" + response['result']['CartId'])
+                            //console.log(" COUNT" + response['result']['Count'])
+                            //console.log(" Total" + response['result']['Total'])
+                            //console.log(" ITEM ID" + response['result']['Items']['id'])
+                            //var items = response['result']['Items']
+                            //console.log(" ITEMS" + items.length)
+                            //console.log(" ITEM ID" + items[i]['id'])
+                            var items = response['result']['Items']
+                            amount = response['result']['Total'].toFixed(2);
+
+                           
+                        
+                            SetData.html('')
+                            var data=null
+                            for(let i=0; i<items.length; i++)
+                            {
+                            var price = items[i]['price'].toFixed(2);
+                            var qty = items[i]['quanity'];
+                            var totalAmount = (qty * price).toFixed(2);
+                               
+                                 data = '<label id="cartProductId" for= "id" hidden = "hidden"> ' + items[i]['id'] + ' </label><div class= "row"> <div class="col-lg-3 col-md-12 mb-4 mb-lg-0">'+
+                                        //<!--Image -->
+                                '<div class="bg-image hover-overlay hover-zoom ripple rounded" data-mdb-ripple color="light" > <img id="cartImageId" src="/' + items[i]['image'] + '" class="rounded" alt="" style = "max-height:90px;max-width:90px;" /> <a href="#!">  <div class="mask" style="background-color: rgba(251, 251, 251, 0.2)"> </div> </a> ' +
+                                  '</div>'+
+                                //< !--Image -->removeFromCartCart(id);
+                                  '</div><div class="col-lg-5 col-md-6 mb-4 mb-lg-0">'+
+                                    //<!--Data -->
+                                '<p id="cartNameId"> <strong>' + items[i]['name'] + ' </strong></p > <a id="cartRemoveQuantityId" type = "button" asp-action="Remove" asp-controller="Product" asp area="UI" asp-route-id="' + items[i]['id'] + '" class="btn btn-danger btn-sm me-1 mb-2" data-mdb-toggle="tooltip" onclick = "removeFromCartCart(' + items[i]['id'] + ')" title = "Remove item" > <i class="fas fa-trash" > </i>  </a>' +
+                                
+                                //        < !--< button type = "button" class="btn btn-danger btn-sm mb-2" data - mdb - toggle="tooltip"
+                                //title = "Move to the wish list" >
+                                //    <i class="fas fa-heart" > </i>
+                                //        < /button>-->
+                                //        < !--Data -->
+                                '</div>'+
+                                 '<div class="col-lg-4 col-md-6 mb-4 mb-lg-0">'+
+                                 //               <!--Quantity -->
+                              '<div class="d-flex mb-4" style = "max-width: 300px"> '+
+                                '<button id="cartAddQuantityId" class="btn btn-primary px-3 me-2"  onclick = "stepdown(' + items[i]['id'] + ')" style="height: 40px;" > <i class="fas fa-minus fa-xs"> </i>  </button>' +
+
+                                '<div class="Tests"> <input id="' + items[i]['id'] + '" min = "1" name = "quantity" value = ' + items[i]['quanity'] + ' type = "number" onChange="changedValue(' + items[i]['id'] + ')" class="form-control"/>' +
+                                   
+                                     '</div>'+
+
+                                '<button id = "cartMinusQuantityId" class= "btn btn-primary px-3 ms-2" onclick ="stepup('+ items[i]['id']+')" style="height: 40px;"> <i class="fas fa-plus" > </i> </button>' +
+                                     '</div>'+
+
+                                     
+                                            //< !--Quantity -->
+                                            //    <!--Price -->
+                                            '<p class="text-start text-md-center"> <strong id="cartPriceId" >'+
+                                            + qty +" X "+ price + " = " + totalAmount +' </strong></p>' +
+                                            //  < !--Price -->
+                                    '</div>'+
+                                   '</div>' +
+                                 '<hr class="hr" />'
+                                   //< !--Single item-- >
+                                SetData.append(data);
+                            }
+                                SetData.append('<a type="button" href="/UI/Product/" class="btn btn-dark text-warning float-start" > <i class="bi bi-back"> </i> Continue Shopping </a >');
+                            
+						}
+						 
+					    else {
+                            SetData.html('')
+                            var data=null
+                            data = '<div class="alert alert-warning alert-dismissible fade show" role="alert"><strong> You are here. </strong> Your cart is empty. Items You add to cart will appear here.<a href="/UI/Product/" type = "button" class="btn btn-success text-center float-end"> <i class="bi bi-forward"> </i> Take Me To Browse Products </a> </div>'
+                              SetData.append(data);
+                              alertify.warning(response['message'][0]);
+					    }
+                            //update html for totals
+                            var totalsData = $("#totalSummary");
+                            totalsData.html('')
+                            var totald =
+                                '<ul class="list-group list-group-flush">' +
+                                '<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">  Products <span id = "cartTotalSum" > ' + amount + ' </span>' +
+                                '</li>' +
+                                '<li class="list-group-item d-flex justify-content-between align-items-center px-0">Shipping' +
+                                '<span> 0.00 </span>' +
+                                '</li>' +
+                                '<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">' +
+                                '<div>' +
+                                '<strong>Total amount </strong>' +
+                                '<strong>  <p class="mb-0" > (including VAT)</p> </strong>' +
+                                '</div>' +
+                                '<span> <strong id="cartTotalFinal"> ' + amount + ' </strong></span>' +
+                                '</li>' +
+                                '</ul>' +
+                                '<div class="d-flex">' +
+
+                        '<a type="button" href="/UI/Checkout/AddressAndPayment" class="btn btn-success text-center "style="width:100%"> <i class="bi bi-forward" > </i>  check out </a>' +
+                                '<div>'
+
+                                totalsData.append(totald);
+                  }
+                  
+
+			});
+    
+		}
+
+        //ajax function to add product to cart
+		function updateCartCount(id,count)
+		{
+
+
+            if (count == 1) {
+                removeFromCartCart(id);
+            }
+            else
+            {
+
+                        var url = "/UI/CartManager/UpdateCartCountCart";
+			            $.ajax({
+				            type: "POST",
+				            url: url,
+                            data: { id: Number(id), count: Number(count) },
+				            success: function (response) {					 
+					            if (response['success'] == true) {
+						            alertify.success(response['message'][0]);
+
+                                    getCartCount();
+
+					            }
+					            else {
+						            alertify.error(response['message'][0]);
+					            }
+				            }
+			            })
+            }
+		}
+        function removeFromCartCart(id){
+
+            var url = "/UI/CartManager/RemoveFromCart";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { id: Number(id) },
+                success: function (response) {
+                    if (response['success'] == true) {
+                        getCartCount();
+                        getIconCartUpdatedCount() ;
+                    }
+                    else {
+                        alertify.error(response['message'][0]);
+                    }
+                }
+            })
+
+        }
+        
+
+        var my_value = 1;
+        function stepup(id) {
+            var cur_val = document.getElementById(id).value;
+            if (cur_val == 1 || cur_val > 1) {
+                my_value = (parseInt(cur_val) + 1);
+                document.getElementById( id ).value = my_value;
+                //alert(id)
+                updateCartCount(id, document.getElementById(id).value)
+            }
+        }
+
+
+        //cartQuantityvalue
+        function stepdown(id) {
+            var cur_val = document.getElementById(id).value;
+            if (cur_val > 1) {
+                //Parse Current Value to Int
+                my_value = (parseInt(cur_val) - 1);
+                document.getElementById(id).value = my_value;
+                //alert(id)
+                 updateCartCount(id, document.getElementById(id).value)
+            }
+        }
+
+
+        function changedValue(id){
+             //alert("The text has been changed.");
+            //alert(id)
+             updateCartCount(id, document.getElementById(id).value)
+        }
+        function getIconCartUpdatedCount() {
+
+            var url = "/UI/CartManager/getCartCount";
+            $.ajax({
+                type: "POST",
+                url: url,
+                success: function (response) {
+                    if (response['success'] == true) {
+                        //alertify.success(response['message'][0]);
+
+                        var SetData = $("#cart");
+                        SetData.html("");
+                        if (SetData != null) {
+                            var data = '<a href="/UI/CartManager/Cart" asp-area="UI" asp-controller="CartManager" asp-action="Cart" class="cart position-relative d-inline-flex"><i class="bi-cart-plus-fill"></i><span id="count" class="cart-basket d-flex align-items-center justify-content-center text-danger"> ' + response['message'][0] + ' </span></a>'
+                        }
+                        SetData.append(data);
+
+                    }
+                    else {
+                        alertify.error(response['message'][0]);
+                    }
+                }
+            })
+        }
+      
+    </script>
+ }

@@ -1,0 +1,358 @@
+﻿@model IEnumerable<ProductType>
+
+
+	@{
+		ViewData["Title"] = "List of Product Types";
+	}
+
+	<br />
+	<br/>
+<div class="col-md-8 offset-md-2">
+	 
+	<div class="row d-flex">
+		 <div class="col text-info">
+	     <h2 class="text-info class align-middle">Product Type List </h2>	 
+		</div>
+		 <div class="col">			 
+			<button class="btn btn-primary float-end" onclick="CreateNew(0)"> <i class="bi bi-plus-circle"> </i>  New Product Type </button>
+			@*Place Modal popup here*@
+			<partial name="Type" class="float-end"></partial>
+			@*@Html.Partial("/Views/Shared/Type.cshtml");*@
+
+		</div>
+	</div>
+
+
+	<br />
+
+	<div class="row input-group">
+		<table class="table table-striped" id="tableProductTypes">
+		<thead>
+			<tr>
+					<th> ID </th>
+					<th> TypeName </th>				
+				    <th>  </th>
+			</tr>			 
+		</thead>
+		<tbody id="tableBody">
+ 
+		</tbody>
+	</table>
+	</div>
+
+		@section scripts
+		{
+			<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+		@*database scripts used*@
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+		<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+		            @*Start of With Use Of Modal Popup*@
+					<script type="text/javascript">
+
+						
+
+						$(document).ready(function () {
+
+							getAll(false);
+							$('#tableProductTypes').dataTable({
+								"columnDefs": [
+									{
+										"targets": [0],
+										"visible": false,
+										"searchable": false
+									}
+								]
+							});
+							
+						});
+												
+						function CreateNew(id) {
+							
+							//Show Modal for new Entry.
+							$("#staticBackdropTypeModal").modal('show')
+							 //clear field
+							$("#id").val(id)
+				            //getAllForUpdate();//optionally add optional selection data
+						}
+
+						function deleteType(id)
+						{
+
+						 
+				
+								var url = "/Admin/ProductTypes/deleteType?id=" + id;
+								$.ajax({
+									type: "post",
+									url: url,
+									success: function (response) {
+										if (response['success'] == true) 
+										{
+											alertify.success(response['message'][0]);
+
+											getAll(true);
+
+										}
+										else
+										{
+											alertify.error(response['message'][0]);
+										}
+										 
+
+									}
+								})
+						}
+						function Edit(id) {
+
+							//Show Modal for.
+							
+							$("#id").val(id)
+							var url = "/Admin/ProductTypes/getTypeDetails?id=" + id;
+							$("#ModalTitle").html("Update Record");
+							$("#staticBackdropTypeModal").modal('show')
+							$.ajax({
+								type: "GET",
+								url: url,
+								success: function (data) {
+									//var obj = JSON.parse(data);
+						            console.log(data)
+									$("#id").val(data[0]["id"]);
+									$("#Type").val(data[0]["typeName"]);
+									//$("#Email").val(ob[j.Email);
+									//$("#DropDwn option:selected").text(obj.tblDepartment.DepartmentName);
+									//$("#DropDwn option:selected").val(obj.DepartmentId);
+
+								}
+							})
+						}
+						function ClearAll() {
+							$("#Type").val('');//from the modal
+							//$("#idUsedInJavaScript".val('') //optional
+						    $("Id").val(''); //option for redit purpose
+						}
+
+						//get all product types for edit
+						function getAllForUpdate()
+						{
+							//assuming we are loading this to an option list
+							$("#idUsedInJavaScript option").remove();//clear the option list
+							$("#idUsedInJavaScript").append("<option value=''>Select</option>");//setting defauilt value to null#
+							$.ajax({
+								type:"POST",
+								url: "/Admin/ProductTypes/getAllTypes",
+								success(response) //success function
+								{
+									if(response!=null)
+									{
+										console.log(response)
+										$.each(response, function(key,value)
+										{
+
+											//optionally add to options the data value
+											$("#idUsedInJavaScript").append("<option value='" + value.id + "'>" + value.typeName + "</option>");
+										});
+										
+									}
+								},
+								error()
+								{
+
+								}
+							});
+						}
+						//all prudcts for loading
+						function getAll(isUpdating) {	
+							$.ajax({
+								type: "POST",
+								url: "/Admin/ProductTypes/getAllTypes",
+								async :false,
+								success(response) //success function
+								{
+									if (response != null) 
+									{
+										if (!isUpdating)
+										{
+													var SetData = $("#tableBody");
+													$.each(response, function (key, value) 
+													{
+								
+														var data = "<tr>" +
+															"<td>" + value.id + "</td>" +
+															"<td>" + value.typeName + "</td>" +
+										//"<td>" + value.typeName + "</td>" +
+										"<td>" + "<a href='#' class='btn btn-danger float-end' onclick='deleteType(" + value.id + ")'><i class='bi bi-trash'></i>  </a><a href='#' class='btn btn-primary float-end' onclick='Edit(" + value.id + ")'><i class='bi bi-pencil'></i>  </a>   </td>" +
+															"</tr>";
+
+														SetData.append(data);
+											 
+												});
+										}
+										else
+										{
+								         
+									     $('#tableProductTypes').DataTable().clear().destroy();
+											//refreshing the datatable
+											 $.each(response, function (key, value) 
+											 {
+												var $tblRow = $('<tr>');
+
+									            $tblRow.append("<td>" + value.id + "</td>");
+									            $tblRow.append("<td>" + value.typeName + "</td>");
+									$tblRow.append("<td>" + "<a href='#' class='btn btn-danger float-end' onclick='deleteType(" + value.id + ")'><i class='bi bi-trash'></i>  </a><a href='#' class='btn btn-primary float-end' onclick='Edit(" + value.id + ")'><i class='bi bi-pencil'></i>  </a>   </td>" +
+										"</tr>");
+
+											$('#tableProductTypes').append($tblRow);
+
+											});
+
+											$('#tableProductTypes').dataTable({
+												"columnDefs": [
+													{
+														"targets": [0],
+														"visible": false,
+														"searchable": false
+													}
+												]
+											});
+
+										}
+									}
+									
+								},
+								error() { 
+
+								}
+							});
+						}
+
+
+
+
+
+						function SaveOrUpdate()
+						{
+							//get all values from Ui
+							var typeName = $("#Type").val(); //from the modal
+							//var typeIdfromList=$("#idUsedInJavaScript").val(); //optional selection
+							var idForEdit = $("#id").val(); //option for redit purpose
+
+							//add validation for the data
+
+							if(typeName=='')
+							{
+								$("#Type").css('border-color' ,'red')
+								return;
+							}
+							$("#Type").css('border-color', '#CCC')
+							//create object data to send from ajax
+							var objectData= new Object();
+							objectData.TypeName = typeName;
+							objectData.Id = idForEdit;
+
+								var urlValue = "/Admin/ProductTypes/SaveOrUpdate";
+							
+								$.ajax({
+									type: "POST",
+									url: urlValue,
+									data: objectData,
+									success(response) //success function
+									{
+										if (response != null) {
+											console.log(response)
+											if(response['success'] == true)
+											{
+												alertify.success(response['message'][0]);
+											
+												$("#staticBackdropTypeModal").modal("hide");
+
+
+
+												getAll(true);
+												ClearAll();
+											}
+											else
+											{
+												alertify.error(response['message'][0]);
+											}
+											return;
+
+										}
+										alertify.error("Type Not Saved");
+
+									},
+									error() {
+										alertify.error("Error occured");
+									}
+								});
+
+
+
+
+						}
+					</script>
+
+					
+		            @*End of With Use Of Modal Popup*@
+
+
+					@*Start of Without Use Of Modal Popup*@
+
+						    <script type="text/javascript">
+								$(document).ready(function () {				    
+								var save = `@TempData["Save"]`
+								//console.log(save)
+								if(save!= '')
+								{
+								var res =  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+				 
+								const saveJson = JSON.parse(res);
+							 
+										if(saveJson['responseCode']=='0')
+										{
+											alertify.success(saveJson.responseMessage);
+										}
+										else
+										{
+											alertify.error(saveJson.responseMessage);
+										}
+						  
+								}
+								var edit = `@TempData["Edit"]`
+								if(edit!= '')
+								{
+									var res = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));
+					 
+									const saveJson = JSON.parse(res);
+						 
+									if (saveJson['responseCode'] == '0') {
+										alertify.success(saveJson.responseMessage);
+									}
+									else {
+										alertify.error(saveJson.responseMessage);
+									} 
+								}
+							   var del = `@TempData["Delete"]`
+							   if(del!= '')
+							   { 
+										var res =  @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData.Values));	
+				 
+										const saveJson = JSON.parse(res);
+										//console.log(save['responseCode'])
+											if(saveJson['responseCode']=='0')
+										{
+											alertify.success(saveJson.responseMessage);
+										}
+										else
+										{
+											alertify.error(saveJson.responseMessage);
+										}					  
+								}
+				    
+							});
+						
+					        </script>
+		              @*End of Without Use Of Modal Popup*@
+		}

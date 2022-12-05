@@ -1,0 +1,163 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Product
+
+@{
+	ViewData["Title"] = "Edit Product";
+}
+
+<div class="col-md-6 offset-md-3">
+	<div class="form-control rounded">
+		<div class="text-info"><h2>New Product </h2>  </div>
+
+		<form asp-action="Edit" method="post" enctype="multipart/form-data" id="Edit-form">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="@Model.Id" />
+			<h3> @ViewBag.message</h3>
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="Name"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Name" class="form-control" placeholder="E.g Coat Xl ..." />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="Price"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="Price" class="form-control" placeholder=" E.g 250 ..." type="number" />
+					<span asp-validation-for="Price" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="Image"></label>
+				</div>
+
+				<div class="col-8">
+					<input asp-for="Image" class="form-control" accept="image/*" value="/" +"@Model.Image" type="file" id="btnchoose"
+						   onchange="document.getElementById('imageId').src = window.URL.createObjectURL(this.files[0])" />
+					<img class="mt-2" src="{Model.Image}" alt="" id="imageId" style="height:100px; width:200px;" />
+					@*<span asp-validation-for="Image" class="text-danger"></span>*@
+				</div>
+
+			</div>
+			@*<div class="form-group row mt-2">
+				<div class="col-8">
+					
+				</div>
+			</div>*@
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductColor"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="ProductColor" class="form-control" placeholder=" E.g Red" />
+					<span asp-validation-for="ProductColor" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductTypeId"></label>
+				</div>
+				<div class="col-8">
+					<select asp-for="ProductTypeId" asp-items="ViewBag.ProductTypeId" class="form-control"></select>
+					@*<input asp-for="ProductColor" class="form-control" placeholder=" E.g 250 ..." />*@
+					<span asp-validation-for="ProductTypeId" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductTagId"></label>
+				</div>
+				<div class="col-8">
+					<select asp-for="ProductTagId" asp-items="ViewBag.ProductTagId" class="form-control"></select>
+					@*<input asp-for="ProductColor" class="form-control" placeholder=" E.g 250 ..." />*@
+					<span asp-validation-for="ProductTagId" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="IsAvailable"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="IsAvailable" class="form-check-input mt-0" type="checkbox" />
+					@*<input asp-for="IsAvailable" class="form-control" type="checkbox"/>*@
+
+				</div>
+			</div>
+
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<input class="btn btn-primary" id="btn-submit" type="submit" value="Update" />
+				</div>
+				<div class="col-8 mt-1">
+					<a class="btn btn-outline-primary float" asp-action="Index"> <i class="btn-close">  </i> Back To List </a>
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+
+@section scripts{
+	@{
+		await Html.RenderPartialAsync("_validationScriptsPartial");
+	}
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+	<script type="text/javascript">
+
+
+		$(document).ready(function (e) {
+		
+				$("#btn-submit").on("click", function (e) {
+					e.preventDefault();
+					alertify.confirm('Confirmation Dialog', 'Confirm Updating a Product ', function (e) {
+						if (e) {
+							$("#Edit-form").submit();
+							//alertify.success("Product Tag  was created successfully.")
+							return true;
+						} else {
+							alertify.error("Something went wrong");
+							return false;
+						}
+					}
+					, function (e) { alertify.error('User Cancelled Request') });
+
+				});
+		});
+		@*load image from database *@
+		 $(document).ready(function()
+           {
+				if("@Model.Image" !=null)
+				{
+					var output = document.getElementById('#imageId')
+					$('#imageId').attr("src", "/"+"@Model.Image");
+					//var image1 = Image.FromFile("/" + "@Model.Image");
+					//const dataTransfer = new DataTransfer();
+					//dataTransfer.items.add(image1);//your file(s) reference(s)
+					 
+					//console.log(dataTransfer.files[0])
+					//document.getElementById('btnchoose').files = dataTransfer.files;
+
+					//$('#btnchoose').attr("value", "/" + "@Model.Image")
+				}
+
+
+			})
+	</script>
+	}

@@ -1,0 +1,60 @@
+﻿<!-- Button trigger modal -->
+@*<button type="button" id="btnLoadModal" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#staticBackdropTypeModal"></button>
+*@
+<!-- Modal -->
+<div class="modal fade" id="staticBackdropTypeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Product Type</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+               @* <div class="form-group row invisible">*@
+                   
+                        <input for="Id" id="id" hidden="hidden"/>
+                       
+              @*  </div>*@
+                <div class="form-group row">
+                    <div class="col-3 ml-3">
+                       @* <label for="recipient-name" class="col-form-label">Recipient:</label>*@
+                        <label for="TypeName" class="col-form-label"> TypeName </label>
+                       
+                    </div>
+                    <div class="d-inline">
+                        <input for="TypeName"id="Type" class="form-control mt-2" placeholder="E.g. Men's Clothing ..."/>
+                        <span validation-for="TypeName" class="text-danger"></span>
+                    </div>
+                </div>
+                @*If there is data for selection from db*@
+                @*<div class="form-group row">
+                    <div class="col-3 ml-3">
+                        
+                        <label for="DatafromDb" class="col-form-label"> DatafromDb </label>
+
+                    </div>
+                    <div class="d-inline">
+                        
+                        <select id="idUsedInJavaScript" class="form-control"></select>
+
+                        <span validation-for="DatafromDb" class="text-danger"></span>
+                    </div>
+                </div>*@
+
+
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Understood</button>*@
+                    <div class="form-group mt-3">
+                    <button type="button" class="btn btn-success text-dark" data-bs-dismiss="modal">Close</button>
+                       @* <a asp-action="Index" class="btn btn-success float-end"> Back To List</a>*@
+                    <a href="#" onclick="SaveOrUpdate(); return false;" class="btn btn-primary float-end ">Save Type</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

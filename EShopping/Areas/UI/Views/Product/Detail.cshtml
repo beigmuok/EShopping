@@ -1,0 +1,178 @@
+﻿@model EShopping.Models.Product
+
+@{
+	ViewData["Title"] = "Product-Details";
+	Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-4 offset-md-4" id="outer">
+	<div id="follows" class="form-control rounded">
+		<div class="text-info"><h2>Details of Product </h2>  </div>
+
+		<form asp-action="Detail" method="post" enctype="multipart/form-data" id="details-form">
+
+			<input type="hidden" asp-for="@Model.Id" />
+
+			<div class="form-group row mt-2"> 
+				<div class="col-3 mt-1">
+					<label asp-for="Name"></label>
+				</div>
+				<div class="col-8">
+					@*<input asp-for="Name" class="form-control" readonly />*@
+					 @Model.Name
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="Price"></label>
+				</div>
+				<div class="col-8">
+					@*<input asp-for="Price.ToString()" class="form-control" readonly type="number" />*@
+					@Model.Price.ToString("0.00")
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="Image"></label>
+				</div>
+				<div class="col-8">
+				@*	<input asp-for="Image" class="form-control" readonly type="file" />*@
+					<img class="mt-2" src="{Model.Image}" alt="" id="imageId" style="height:100px; width:200px;" />
+
+				</div>
+
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductColor"></label>
+				</div>
+				<div class="col-8">
+				@*	<input asp-for="ProductColor" class="form-control" readonly />*@
+					 @Model.ProductColor
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductTypeId"></label>
+				</div>
+				<div class="col-8">
+					@*<select asp-for="ProductTypeId" asp-items="ViewBag.ProductTypeId" class="form-control"></select>*@
+					@*<input asp-for="ProductType.TypeName" readonly class="form-control" />*@
+				    @Model.ProductType.TypeName
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="ProductTagId"></label>
+				</div>
+				<div class="col-8">
+					@*<select asp-for="ProductTagId" asp-items="ViewBag.ProductTagId" class="form-control"></select>*@
+					@*<input asp-for="ProductTag.Name" readonly class="form-control" />*@
+					 @Model.ProductTag.Name
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-3 mt-1">
+					<label asp-for="IsAvailable"></label>
+				</div>
+				<div class="col-8">
+					<input asp-for="IsAvailable" class="form-check-input mt-0" type="checkbox" />
+
+
+				</div>
+			</div>
+
+			<div class="form-group row mt-2">
+				<div class="col-4 mt-1" id="foo">
+				@*<a class="btn btn-primary" id="btn-submit" asp-action="Index" > <i class="btn btn-close"></i> Back</a>*@
+					<a id="btn" asp-action="Index" class="btn btn-dark text-warning"> <i class="btn btn-close"></i> Back </a>
+			</div>
+				<div class="col-6 mt-1">
+					@*<button type="submit" class="btn btn-success d-flex align-content-center text-center">
+						<i class="bi bi-cart"></i>
+						Add To Cart
+					</button>*@
+
+					<a href="#" onclick="addToCart(@Model.Id)" class="btn btn-success d-flex align-content-center text-center"><i class="bi bi-cart"> Add To Cart</i></a>
+
+					@*<input type="submit" class="btn btn-success d-flex align-content-center text-center"> <i class="bi bi-cart"> </i> Add To Cart/>*@
+
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+@section scripts{
+
+	@{
+		await Html.RenderPartialAsync("_validationScriptsPartial");
+	}
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if ("@Model.Image" != null) {
+				var output = document.getElementById('#imageId')
+				$('#imageId').attr("src", "/" + "@Model.Image");
+
+			}
+		});
+		 
+		//ajax function to add product to cart
+		function addToCart(id)
+		{
+
+			var url = "/UI/CartManager/AddToCart?id=" + Number(id);
+			$.ajax({
+				type: "POST",
+				url: url,
+				success: function (response) {					 
+					if (response['success'] == true) {
+						alertify.success(response['message'][0]);
+	
+						//SetData.append(data);
+						getCartCount();
+					}
+					else {
+						alertify.error(response['message'][0]);
+					}
+				}
+			})
+
+		}
+
+		function getCartCount(){
+
+			var url = "/UI/CartManager/getCartCount";
+			$.ajax({
+				type: "POST",
+				url: url,
+				success: function (response) {
+					if (response['success'] == true) {
+						//alertify.success(response['message'][0]);
+
+						var SetData = $("#cart");
+						SetData.html("");
+						if (SetData != null) {
+							var data = '<a href="/UI/CartManager/Cart" asp-area="UI" asp-controller="CartManager" asp-action="Cart" class="cart position-relative d-inline-flex"><i class="bi-cart-plus-fill"></i><span id="count" class="cart-basket d-flex align-items-center justify-content-center text-danger"> ' + response['message'][0] + ' </span></a>'
+						}
+						SetData.append(data);
+
+					}
+					else {
+						alertify.error(response['message'][0]);
+					}
+				}
+			})
+		}
+
+	</script>
+}
+

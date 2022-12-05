@@ -1,0 +1,204 @@
+﻿@model IEnumerable<Product>
+
+@{
+	ViewData["Title"] = "Products";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-evenly">
+        <div class="col-4">
+            <h1 class="heading text-info"> <span>Our Products</span> </h1>
+        </div>
+        <div class="col-4">
+            <h1 class="form-text"> Sort Products</h1>
+            <form>
+                <select class="form-select" id="SearchBy">
+                    <option value="1">Default Sorting</option>
+                    <option value="2">Sort By Price</option>
+                    <option value="3">Sort By Popularity</option>
+                    <option value="4">Sort By Sale</option>
+                    <option value="5">Sort By Rating</option>
+                </select>
+                <span><i class='bx bx-chevron-down'></i></span>
+            </form>
+        </div>
+    </div>
+    <form method="post" class="d-flex mt-2">
+        <div class="row input-group d-flex">
+            <div class="col">
+                <input type="number" class="form-control" id="lowerAmountInput" placeholder="Lowest Amount" />
+
+            </div>
+            <div class="col">
+
+                <input type="number" class="form-control" id="highAmountInput" placeholder="Highest Amount"/>
+            </div>
+            <div class="col">
+
+                <input type="button" class="btn btn-success" id="searchBtn" value="search by Prices" />
+            </div>
+            @* div class="col-lg-3">	</div>*@
+        </div>
+    </form>
+
+    <div class="row mt-2">
+        <div class="row row-cols-1 row-cols-md-4 g-1" id="dataContainer">
+           
+            @foreach (var product in Model)
+            {
+           @*  <form asp-action="Detail" asp-controller="Product" asp-area="UI" method="post" enctype="multipart/form-data" id="details-form">
+               <input type="hidden" asp-for="@product.Id"/>*@
+                <div class="col">
+                    <div class="card">
+                      @*  <h5 class="card-header">@product.ProductType.TypeName</h5>*@
+                          <img src="/@product.Image" class="card-img-top" style="max-height:100px;" alt="">
+                          <div class="card-body">
+                            <h5 class="card-title text-info">@product.Name</h5>
+                            <div class="form-group mt-3">
+                                <p class="text-danger float-start mt-2"> <strong> Ksh:@product.Price.ToString("0.00") </strong></p>
+                               @* <a class="btn btn-dark float-end text-warning">Details</a>*@
+                                <a asp-action="Detail" asp-controller="Product" class="btn btn-dark float-end text-warning" asp-route-id="@product.Id"> <i class="bi bi-eye"></i> Details </a>
+                            </div>
+                          </div>
+                          <div class="card-footer bg-transparent">
+
+                            @*<a href="#" class="btn btn-success d-flex align-content-center text-center"> <i class="bi bi-cart"> </i> Add To Cart</a>*@
+
+                            <button type="submit" class="btn btn-success text-center" style="width:100%" onclick="addToCart(@product.Id)">  <i class="bi bi-cart"></i>
+                                Add To Cart
+                            </button>
+                               
+                          </div>
+                    </div>
+                </div>
+                    <!--</form>-->
+            }
+        </div>
+    </div>
+</div>
+
+ 
+@section scripts{
+
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    @*Datatable*@
+   @* <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.6/js/buttons.flash.min.js"></script>*@
+    
+   @* <script src="~/js/"></script>*@
+    <script>
+    @*function to search and load based on prices search
+			This does not depend of document to lead but a button click hence we dont use document ready function*@
+           
+				$("#searchBtn").click(function()
+                {
+                    try{
+
+                                       
+                                        var lowerValue = $("#lowerAmountInput").val();
+                                        var highValue =  $("#highAmountInput").val();
+                                       if (lowerValue == "") {
+                                            alert("You must provide lowest price for the search");
+                                            return;
+                                        }
+                                        if(highValue == ""){
+                                            alert("You must provide highest price for the search");
+                                            return;
+                                        }
+                    alert("passed");
+                                        
+                                        var setData = $("#dataContainer")        //this is the div in wich we are changing data                              
+                                        setData.html("");
+                                       // setData.append("<p>Test</p>")   //set this divs html value as ''
+                    $.ajax({
+                                            type:"POST",
+                                            url: "/UI/Product/filterByCost?lowerAmountInput=" + lowerValue + "&highAmountInput=" +highValue,
+                                            contentType:"html",
+                                            success: function(result)
+                                            {
+                                                console.log(result)
+
+                                                if(result==null)
+                                                {
+                                setData.append('<div class="alert alert-warning" ml-3 style = "width:96%; margin-left:2%; margin-right:2%" role="alert"> No Data available for search between ' + lowerValue + ' and ' + highValue + ' </div>')
+                                                }
+                                                else
+                                                {
+                                                    $.each(result,function(index,value)
+                                                    {
+                                    //<form asp-action="Detail" asp-controller="Product" asp-area="UI" method="post" enctype="multipart/form-data" id="details-form">
+                                    var price = value.price.toFixed(2);
+                                    var data = '<input type = "hidden" asp-for=' + value.id + '/> <div class= "col"> <div class= "card"> <img src="/' + value.image + '"class="card-img-top" style ="max-height:100px;" alt = "Image Here"/> <div class="card-body" > <h5 class="card-title text-info" > ' + value.name + '</h5> <div class="form-group mt-3" > <p class="text-danger float-start mt-2" > <strong>Ksh: ' + price + '</strong></p> <button type="submit" asp-action="Detail" asp-controller="Product" class="btn btn-dark float-end text-warning" asp-route-id="18"> <i class="bi bi-eye"> </i> Details </button> </div> </div> <div class="card-footer bg-transparent" > <button type="submit" class="btn btn-success text-center" onclick="addToCart('+ value.id +')"  style = "width:100%"> <i class="bi bi-cart" > </i> Add To Cart </button> </div> </div> </div> '//</form>
+                                                                    setData.append(data);
+                                                    });
+                                                    
+                                                }
+
+                                            }
+                                        });
+                                      
+                } catch (err) {
+                    alert("error found");
+                    console.log( err.message);
+
+                }
+
+            });
+
+
+       
+            //ajax function to add product to cart
+            function addToCart(id)
+            {
+
+                var url = "/UI/CartManager/AddToCart";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: { id: Number(id) },
+                    success: function (response) {
+                        if (response['success'] == true) {
+                            alertify.success(response['message'][0]);
+
+                            //SetData.append(data);
+                            getCartCount();
+                        }
+                        else {
+                            alertify.error(response['message'][0]);
+                        }
+                    }
+                })
+
+            }
+
+            function getCartCount(){
+
+                var url = "/UI/CartManager/getCartCount";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    success: function (response) {
+                        if (response['success'] == true) {
+                            //alertify.success(response['message'][0]);
+
+                            var SetData = $("#cart");
+                            SetData.html("");
+                            if (SetData != null) {
+                                var data = '<a href="/UI/CartManager/Cart" asp-area="UI" asp-controller="CartManager" asp-action="Cart" class="cart position-relative d-inline-flex"><i class="bi-cart-plus-fill"></i><span id="count" class="cart-basket d-flex align-items-center justify-content-center text-danger"> ' + response['message'][0] + ' </span></a>'
+                            }
+                            SetData.append(data);
+
+                        }
+                        else {
+                            alertify.error(response['message'][0]);
+                        }
+                    }
+                })
+            }
+       
+    </script>
+
+
+}
+   
